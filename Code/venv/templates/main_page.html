@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Bootstrap Theme Company</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/jquery/latest/jquery.min.js"></script>
+    <script type="text/javascript" src="//cdn.jsdelivr.net/momentjs/latest/moment-with-locales.min.js"></script>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css" />
+
+    <style>
+    .jumbotron {
+        color: #ffffff;
+        padding: 100px 25px;
+        height: calc(100vh);
+        background-image: url(https://3c1703fe8d.site.internapcdn.net/newman/gfx/news/hires/2017/chemistexpla.jpg);
+        background-size: cover;
+    }
+    .vertical-center {
+        color: #000;
+        margin: 0 auto;
+        width : 1050px;
+        padding-top:10px;
+        background-color:rgba(253, 9, 9,0.4);
+    }
+    .header{
+        padding: 100px;
+        color: #fffaaa;
+        margin: 0 auto;
+        width : 1050px;
+        background-color:rgba(253, 9, 9,0.4);
+    }
+    .navbar-fixed-top{
+       background-color:#FD0909        ;
+       color:#ffffff;
+    }
+    p{
+        color:#ffffff;
+    }
+    </style>
+
+    <script>
+
+
+
+        </script>
+
+    <script type="text/javascript">
+    function getAndLoad(){
+            var city = $( "#selectCity option:selected" ).text();
+            console.log(city);
+            var category = $( "#selectCategory option:selected" ).text();
+            console.log(category);
+            var startDate = $('#reportrange').data('daterangepicker').startDate.format('YYYY-MM-DD');;
+            var endDate = $('#reportrange').data('daterangepicker').endDate.format('YYYY-MM-DD');;
+             console.log(startDate);
+              console.log(endDate);
+            localStorage.setItem('city', city);
+            localStorage.setItem('category', category);
+            localStorage.setItem('startDate', startDate);
+            localStorage.setItem('endDate', endDate);
+            window.location.assign("http://127.0.0.1:5000/index")
+    }
+
+    $(function() {
+        moment.locale('tr');
+        var start = moment();
+        var end = moment().add(7, 'days');
+
+        function cb(start, end) {
+            $('#reportrange span').html(start.format('MMMM D, YYYY') + ' - ' + end.format('MMMM D, YYYY'));
+        }
+
+        $('#reportrange').daterangepicker({
+            "locale": {
+            "separator": " - ",
+            "applyLabel": "Uygula",
+            "cancelLabel": "İptal",
+            "customRangeLabel": "Özel Aralık",
+
+            },
+            startDate: start,
+            endDate: end,
+            ranges: {
+               'Bugün': [moment(), moment()],
+               'Yarın': [moment().add(1, 'days'), moment().add(1, 'days')],
+               'Bu Haftasonu': [moment().isoWeekday(6)._d, moment().isoWeekday(7)._d],
+               'Bu Hafta': [moment(), moment().isoWeekday(7)._d],
+               'Gelecek Hafta': [moment().add(1, 'weeks').startOf('isoWeek'),moment().add(1, 'weeks').endOf('isoWeek')],
+               'Bu Ay': [moment().startOf('month'), moment().endOf('month')],
+               'Gelecek Ay': [moment().add(1, 'month').startOf('month'), moment().add(1, 'month').endOf('month')]
+            }
+        }, cb);
+
+        cb(start, end);
+
+    });
+    </script>
+</head>
+<body>
+ <nav class="navbar navbar-default navbar-fixed-top">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" style="color:#ffffff;" href="#">Logo</a>
+    </div>
+    <div class="collapse navbar-collapse" id="myNavbar">
+      <ul class="nav navbar-nav navbar-right">
+          {% if 'username' in session%}
+            {% if session['type']=='admin' %}
+          <li  style="color:#ffffff; font-size:18px; margin-top:12px">Hoşgeldin, {{session["username"]}}!</li><li><a href="/admin/" style="color:#ffffff; font-size:18px;">Admin Sayfasına Git</a></li><li><form method=POST action="{{ url_for('logout') }}"><button type="submit" class="btn btn-block" style="color:#ffffff; font-size:18px;background-color:#FD0909;margin-top:4px">Çıkış yap</button></form></li>
+            {%else%}
+          <li style="color:#ffffff; font-size:18px; margin-top:12px" >Hoşgeldin, {{session["username"]}}!</li><li><form method=POST action="{{ url_for('logout') }}"><button type="submit" class="btn btn-block" style="color:#ffffff; font-size:18px;background-color:#FD0909;margin-top:4px">Çıkış yap</button></form></li>
+
+          {% endif %}
+          {%else%}
+             <li><a href="/giris" style="color:#ffffff; font-size:18px;">Giriş Yap</a></li>
+          {% endif %}
+
+      </ul>
+    </div>
+  </div>
+</nav>
+<div class="jumbotron text-center ">
+    <h1 class="header">Etkinlik Haritası</h1>
+    <form id="form-inline" class="vertical-center">
+    <div class="input-group"  >
+        <div class="btn"  >
+            <p class="btn">İl</p>
+            <select id="selectCity" name="İl" class="selectpicker" data-style="btn-danger" style="width:200px; height:42px;  ">
+            <option value="0">Hepsi</option>
+            <option value="1">Adana</option>
+            <option value="2">Adıyaman</option>
+            <option value="3">Afyonkarahisar</option>
+            <option value="4">Ağrı</option>
+            <option value="5">Amasya</option>
+            <option value="6">Ankara</option>
+            <option value="7">Antalya</option>
+            <option value="8">Artvin</option>
+            <option value="9">Aydın</option>
+            <option value="10">Balıkesir</option>
+            <option value="11">Bilecik</option>
+            <option value="12">Bingöl</option>
+            <option value="13">Bitlis</option>
+            <option value="14">Bolu</option>
+            <option value="15">Burdur</option>
+            <option value="16">Bursa</option>
+            <option value="17">Çanakkale</option>
+            <option value="18">Çankırı</option>
+            <option value="19">Çorum</option>
+            <option value="20">Denizli</option>
+            <option value="21">Diyarbakır</option>
+            <option value="22">Edirne</option>
+            <option value="23">Elazığ</option>
+            <option value="24">Erzincan</option>
+            <option value="25">Erzurum</option>
+            <option value="26">Eskişehir</option>
+            <option value="27">Gaziantep</option>
+            <option value="28">Giresun</option>
+            <option value="29">Gümüşhane</option>
+            <option value="30">Hakkâri</option>
+            <option value="31">Hatay</option>
+            <option value="32">Isparta</option>
+            <option value="33">Mersin</option>
+            <option value="34">İstanbul</option>
+            <option value="35">İzmir</option>
+            <option value="36">Kars</option>
+            <option value="37">Kastamonu</option>
+            <option value="38">Kayseri</option>
+            <option value="39">Kırklareli</option>
+            <option value="40">Kırşehir</option>
+            <option value="41">Kocaeli</option>
+            <option value="42">Konya</option>
+            <option value="43">Kütahya</option>
+            <option value="44">Malatya</option>
+            <option value="45">Manisa</option>
+            <option value="46">Kahramanmaraş</option>
+            <option value="47">Mardin</option>
+            <option value="48">Muğla</option>
+            <option value="49">Muş</option>
+            <option value="50">Nevşehir</option>
+            <option value="51">Niğde</option>
+            <option value="52">Ordu</option>
+            <option value="53">Rize</option>
+            <option value="54">Sakarya</option>
+            <option value="55">Samsun</option>
+            <option value="56">Siirt</option>
+            <option value="57">Sinop</option>
+            <option value="58">Sivas</option>
+            <option value="59">Tekirdağ</option>
+            <option value="60">Tokat</option>
+            <option value="61">Trabzon</option>
+            <option value="62">Tunceli</option>
+            <option value="63">Şanlıurfa</option>
+            <option value="64">Uşak</option>
+            <option value="65">Van</option>
+            <option value="66">Yozgat</option>
+            <option value="67">Zonguldak</option>
+            <option value="68">Aksaray</option>
+            <option value="69">Bayburt</option>
+            <option value="70">Karaman</option>
+            <option value="71">Kırıkkale</option>
+            <option value="72">Batman</option>
+            <option value="73">Şırnak</option>
+            <option value="74">Bartın</option>
+            <option value="75">Ardahan</option>
+            <option value="76">Iğdır</option>
+            <option value="77">Yalova</option>
+            <option value="78">Karabük</option>
+            <option value="79">Kilis</option>
+            <option value="80">Osmaniye</option>
+            <option value="81">Düzce</option>
+            </select>
+            <p class="btn">Kategori</p>
+            <select id="selectCategory" class="selectpicker " data-style="btn-primary" style="width:200px; height:42px;">
+            <option value="0">Hepsi</option>
+            <option value="1">Sahne</option>
+            <option value="2">Müzik</option>
+            <option value="3">Aile</option>
+            <option value="4">Spor</option>
+            <option value="5">Diğerleri</option>
+            </select>
+            <p class="btn">Tarih</p>
+            <div id="reportrange" class="btn" style="text-align: center;background: #fff; cursor: pointer;  border: 1px solid #ccc; width: 300px; height:38px;">
+                <i class="fa fa-calendar"></i>
+                <span></span> <i class="fa fa-caret-down"></i>
+            </div>
+            <button onclick="getAndLoad()" type="button" class="btn btn-primary" value="submit" style="height:38px; ">Ara</button>
+        </div>
+    </div>
+    </form>
+</div>
+
+
+
+</body>
+</html>
+

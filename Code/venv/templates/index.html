@@ -1,0 +1,1420 @@
+
+<html>
+<head>
+    <!--<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD1FwJCRkIeTDeAsMHe0KCUBDHRrFG0u1w"></script> -->
+    <link rel="shortcut icon" href="#" />
+    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+<!--<script async defer
+    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBbhgN14yV7WVRIJMQTfSUAcv1M4EXDWqE&callback=initMap">-->
+
+    <script
+    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBbhgN14yV7WVRIJMQTfSUAcv1M4EXDWqE">
+    </script>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/jquery/latest/jquery.min.js"></script>
+    <script type="text/javascript" src="//cdn.jsdelivr.net/momentjs/latest/moment-with-locales.min.js"></script>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css" />
+  <script src="/static/il_ilce.js" charset="utf-8"></script>
+<style>
+#map {
+height:85vh;
+width:100%;
+margin-top:30px;
+}
+
+#results {
+width:100%;
+height:75%;
+overflow-y: scroll;
+}
+#legend {
+  font-family: Arial, sans-serif;
+  background: #fff;
+  padding: 10px;
+  margin: 10px;
+  border: 3px solid #000;
+}
+#legend h3 {
+  margin-top: 0;
+}
+#legend img {
+  vertical-align: middle;
+}
+
+.grid-container {
+  display: grid;
+  grid-template-columns: auto auto auto auto auto;
+  padding: 10px;
+}
+.grid-item {
+  padding: 15px;
+  font-size: 16px;
+  text-align: center;
+}
+
+.navbar-fixed-top{
+   background-color:#FD0909;
+   color:#ffffff;
+}
+
+.input-group{
+ padding-top:20px;
+  margin:0 auto;
+}
+
+.filterStyle{
+margin: 0;
+left: 50%;
+}
+
+.vertical-center{
+padding:0px 60px 0px 60px;
+margin: 0;
+left: 50%;
+top: 50%;
+}
+
+.item{
+  padding-left:15px;
+  padding-top:5px;
+  margin-bottom:7px;
+  margin-right:10px;
+  color:white;
+}
+.place{
+	font-size:22px;
+    color:white;
+	font-weight: bold;
+}
+.text{
+color: white;
+font-size: 18px;
+}
+
+.place2{
+	font-size:22px;
+    color:gray;
+	font-weight: bold;
+}
+.text2{
+color: gray;
+font-size: 18px;
+}
+
+
+ul{
+list-style-type:none;
+}
+
+.my-new-list{
+  width: 100%; /* optional */
+  margin: 0;
+  padding: 0;
+}
+
+img{
+	width: 35px;
+    height:35px;
+}
+.row{
+    margin: 0 auto;
+}
+.filter_names{
+  width:150px;
+  font-size:16px;
+  font-weight: bold;
+}
+
+#sorts{
+  margin-top:5px;
+  margin-bottom:5px;
+  padding:10px;
+}
+
+.adress, .adress_name{
+ background-color:#faa000;
+}
+.loc, .loc_name{
+ background-color:#fabf00;
+}
+.cat, .cat_name{
+ background-color:#33e990;
+}
+.price, .price_name{
+ background-color:#33f0bb;
+}
+.date, .date_name{
+ background-color:#3fa0bb;
+}
+
+#ara{
+ height:35px;
+ font-size:20px;
+ width:150px;
+ margin:5px 0px 5px 0px;
+ padding:2px;
+ text-align:center;
+}
+
+/* Center the loader */
+#loader {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  z-index: 1;
+  width: 150px;
+  height: 150px;
+  margin: -75px 0 0 -75px;
+  border: 16px solid #f3f3f3;
+  border-radius: 50%;
+  border-top: 16px solid #3498db;
+  width: 120px;
+  height: 120px;
+  -webkit-animation: spin 2s linear infinite;
+  animation: spin 2s linear infinite;
+}
+
+@-webkit-keyframes spin {
+  0% { -webkit-transform: rotate(0deg); }
+  100% { -webkit-transform: rotate(360deg); }
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+/* Add animation to "page content" */
+.animate-bottom {
+  position: relative;
+  -webkit-animation-name: animatebottom;
+  -webkit-animation-duration: 1s;
+  animation-name: animatebottom;
+  animation-duration: 1s
+}
+
+@-webkit-keyframes animatebottom {
+  from { bottom:-100px; opacity:0 }
+  to { bottom:0px; opacity:1 }
+}
+
+@keyframes animatebottom {
+  from{ bottom:-100px; opacity:0 }
+  to{ bottom:0; opacity:1 }
+}
+
+</style>
+    <script>
+    var categoryObj= {
+    "list":[
+  {
+    "kategori": "Sahne",
+    "val" : "tiyatro",
+    "alt": "Tiyatro",
+  },
+  {
+    "kategori": "Sahne",
+    "val" : "opera",
+    "alt": "Opera",
+  },
+  {
+    "kategori": "Sahne",
+    "val" : "stand_up",
+    "alt": "Stand Up",
+  },
+  {
+    "kategori": "Sahne",
+    "val" : "gosteri",
+    "alt": "Gösteri",
+  },
+  {
+    "kategori": "Sahne",
+    "val" : "bale_dans",
+    "alt": "Bale Dans",
+  },
+  {
+    "kategori": "Sahne",
+    "val" : "sinema",
+    "alt": "Sinema",
+  },
+    {
+    "kategori": "Sahne",
+    "val" : "musical",
+    "alt": "Müzikal",
+  },
+  {
+    "kategori": "Sahne",
+    "val" : "muzikli_gosteri",
+    "alt": "Müzikli Gösteri",
+  },
+  {
+    "kategori": "Sahne",
+    "val" : "sirk",
+    "alt": "Sirk",
+  },
+{
+    "kategori": "Sahne",
+    "val" : "other",
+    "alt": "Diğerleri",
+  },
+{
+    "kategori": "Müzik",
+    "val" : "alternatif",
+    "alt": "Alternatif",
+  },
+{
+    "kategori": "Müzik",
+    "val" : "blues",
+    "alt": "Blues",
+  },
+{
+    "kategori": "Müzik",
+    "val" : "dans_elektronik",
+    "alt": "Dans Elektronik",
+  },
+{
+    "kategori": "Müzik",
+    "val" : "dunya_muzik",
+    "alt": "Dünya Müzik",
+  },
+{
+    "kategori": "Müzik",
+    "val" : "heavy_metal",
+    "alt": "Heavy Metal",
+  },
+{
+    "kategori": "Müzik",
+    "val" : "jazz",
+    "alt": "Caz",
+  },
+{
+    "kategori": "Müzik",
+    "val" : "klasik",
+    "alt": "Klasik",
+  },
+{
+    "kategori": "Müzik",
+    "val" : "latin_tango",
+    "alt": "Latin Tango",
+  },
+{
+    "kategori": "Müzik",
+    "val" : "new_age",
+    "alt": "New Age",
+  },
+{
+    "kategori": "Müzik",
+    "val" : "party",
+    "alt": "Party",
+  },
+{
+    "kategori": "Müzik",
+    "val" : "pop",
+    "alt": "Pop",
+  },
+{
+    "kategori": "Müzik",
+    "val" : "rap_hiphop",
+    "alt": "Rap Hiphop",
+  },
+{
+    "kategori": "Müzik",
+    "val" : "rock",
+    "alt": "Rock",
+  },
+{
+    "kategori": "Müzik",
+    "val" : "turksanat_halkmuzik",
+    "alt": "Türk Sanat ve Halk Müziği",
+  },
+{
+    "kategori": "Müzik",
+    "val" : "other",
+    "alt": "Diğerleri",
+  },
+{
+    "kategori": "Aile",
+    "val" : "gosteri",
+    "alt": "Gösteri",
+  },
+{
+    "kategori": "Aile",
+    "val" : "sirk",
+    "alt": "Sirk",
+  },
+{
+    "kategori": "Aile",
+    "val" : "tiyatro",
+    "alt": "Tiyatro",
+  },
+{
+    "kategori": "Aile",
+    "val" : "muzikli_gosteri",
+    "alt": "Müzikli Gösteri",
+  },
+{
+    "kategori": "Aile",
+    "val" : "other",
+    "alt": "Diğerleri",
+  },
+{
+    "kategori": "Spor",
+    "val" : "basketbol",
+    "alt": "Basketbol",
+  },
+    {
+    "kategori": "Spor",
+    "val" : "motorspor",
+    "alt": "Motorspor",
+  },
+
+{
+    "kategori": "Spor",
+    "val" : "esport",
+    "alt": "E-sport",
+  },
+{
+    "kategori": "Spor",
+    "val" : "dovus_sporlari",
+    "alt": "Dövüş Sporları",
+  },
+{
+    "kategori": "Spor",
+    "val" : "Futbol",
+    "alt": "Futbol",
+  },
+{
+    "kategori": "Spor",
+    "val" : "motor_sporlari",
+    "alt": "Motor Sporları",
+  },
+{
+    "kategori": "Spor",
+    "val" : "e_sport",
+    "alt": "E-sport",
+  },
+{
+    "kategori": "Spor",
+    "val" : "voleybol",
+    "alt": "Voleybol",
+  },
+{
+    "kategori": "Spor",
+    "val" : "tenis",
+    "alt": "Tenis",
+  },
+{
+    "kategori": "Spor",
+    "val" : "other",
+    "alt": "Diğerleri",
+  },
+{
+    "kategori": "Diğerleri",
+    "val" : "egitim",
+    "alt": "Eğitim",
+  },
+{
+    "kategori": "Diğerleri",
+    "val" : "atolye",
+    "alt": "Atölye",
+  },
+{
+    "kategori": "Diğerleri",
+    "val" : "mebonayliegitim",
+    "alt": "Mebonayli Eğitim",
+  },
+{
+    "kategori": "Diğerleri",
+    "val" : "muze",
+    "alt": "Müze",
+  },
+{
+    "kategori": "Diğerleri",
+    "val" : "fuar",
+    "alt": "Fuar",
+  },
+{
+    "kategori": "Diğerleri",
+    "val" : "konferans",
+    "alt": "Konferans",
+  },
+{
+    "kategori": "Diğerleri",
+    "val" : "sergi",
+    "alt": "Sergi",
+  },
+{
+    "kategori": "Diğerleri",
+    "val" : "sergi",
+    "alt": "Sergi",
+  },
+{
+    "kategori": "Diğerleri",
+    "val" : "urunsatisi",
+    "alt": "Ürün Satışı",
+  },
+{
+    "kategori": "Diğerleri",
+    "val" : "minimaster",
+    "alt": "Mini master",
+  },
+{
+    "kategori": "Diğerleri",
+    "val" : "seyretix",
+    "alt": "Seyretix",
+  },
+    {
+    "kategori": "Diğerleri",
+    "val" : "@night",
+    "alt": "@night",
+  },
+    {
+    "kategori": "Diğerleri",
+    "val" : "msaworkshop",
+    "alt": "Msa work shop",
+  }
+]}</script>
+
+<script>
+//Değişkenler
+var map;
+var lat;
+var lng;
+var userdata;
+var event_data;
+var markers;
+var marker;
+var all_markers=[];
+var circle;
+var checked=0;
+var delMarker;
+
+var prev_infowindow =false;
+
+moment.locale('tr');
+
+$(document).ready(function() {
+  $('.contain').hide();
+  $('.loc').hide();
+  $('.cat').hide();
+  $('.price').hide();
+  $('.date').hide();
+});
+$(document).ready(function() {
+  $('.filter_list').click(function() {
+    $('.contain').toggle(250);
+    $('#results').toggle(250);
+    $('.cat_color').toggle(250);
+    $('#sorts').toggle(250);
+  });
+  $('.adress_name').click(function() {
+    $('.adress').toggle(250);
+    $('.loc').toggle(250);
+    if(checked==1){
+          console.log("Adres seçildi");
+           console.log(checked);
+           delMarker.setMap(null);
+           circle.setMap(null);
+    }
+    checked=0;
+  });
+  $('.loc_name').click(function() {
+    $('.loc').toggle(250);
+    $('.adress').toggle(250);
+    checked=1;
+  });
+  $('.cat_name').click(function() {
+          $('.cat').toggle(250);
+      });
+  $('.price_name').click(function() {
+          $('.price').toggle(250);
+      });
+  $('.date_name').click(function() {
+          $('.date').toggle(250);
+      });
+});
+
+// Marker ekleyen fonksiyon
+function addMarker(lat,lng,contentString,icon) {
+    var location = {lat: lat , lng: lng};
+    // Add the marker at the clicked location, and add the next-available label
+    // from the array of alphabetical characters.
+    var marker = new google.maps.Marker({
+      position: location,
+      icon: icon,
+      map: map
+    });
+	var infowindow = new google.maps.InfoWindow({
+      content: contentString,
+	  maxWidth: 300,
+
+    });
+	marker.addListener('click', function() {
+	    if( prev_infowindow ) {
+           prev_infowindow.close();
+        }
+
+        prev_infowindow = infowindow;
+	    infowindow.open(map, marker);
+	});
+    all_markers.push(marker);
+}
+//İlçe ismini düzenliyor
+function upperCaseFirstLetter(string) {
+    return string.charAt(0).toLocaleUpperCase('tr-TR') + string.slice(1);
+}
+
+
+//Haritayı başlatan fonksiyon
+function initialize() {
+    var loc = { lat: 41.015137, lng: 28.979530 };
+    map = new google.maps.Map(document.getElementById('map'), {
+    zoom: 11,
+    center: loc
+    });
+    var iconBase = 'http://maps.google.com/mapfiles/ms/icons/';
+    var icons = {
+      blue: {
+        name: '0-20',
+        icon: iconBase + 'blue-dot.png'
+      },
+      green: {
+        name: '20-30',
+        icon: iconBase + 'green-dot.png'
+      },
+      yellow: {
+        name: '30-40',
+        icon: iconBase + 'yellow-dot.png'
+      },
+      orange: {
+        name: '40-50',
+        icon: iconBase + 'orange-dot.png'
+      },
+      red: {
+        name: '50+',
+        icon: iconBase + 'red-dot.png'
+      }
+    };
+    var trafficLayer = new google.maps.TrafficLayer();
+    trafficLayer.setMap(map);
+    var legend = document.getElementById('legend');
+    for (var key in icons) {
+      var type = icons[key];
+      var name = type.name;
+      var icon = type.icon;
+      var div = document.createElement('div');
+      div.innerHTML = '<img src="' + icon + '"> ' + name;
+      legend.appendChild(div);
+    }
+
+    map.controls[google.maps.ControlPosition.RIGHT_BOTTOM].push(legend);
+    var geocoder = new google.maps.Geocoder();
+    var filter_city = localStorage.getItem('city');
+    if(filter_city == 'Hepsi'){
+        map.setZoom(6);
+    }
+    var address = filter_city + " ,Turkey";
+    geocoder.geocode({'address': address}, function(results, status) {
+          if (status === 'OK') {
+            map.setCenter(results[0].geometry.location);
+
+          } else {
+            console.log('Geocode was not successful for the following reason: ' + status);
+          }
+        });
+    var filter_category = localStorage.getItem('category');
+    var filter_start_date = localStorage.getItem('startDate');
+    var filter_end_date = localStorage.getItem('endDate');
+    console.log(filter_start_date);
+    console.log(filter_end_date);
+    $("#selectCity option").filter(function() {
+        return $(this).text() == filter_city;
+    }).attr('selected', true);
+    //$( "#selectCity option:selected" ).text(filter_city);
+    $("#selectCategory option").filter(function() {
+        //may want to use $.trim in here
+        return $(this).text() == filter_category;
+    }).attr('selected', true);
+    //$( "#selectCategory option:selected" ).text(filter_category);
+    var il = filter_city.toLocaleUpperCase('tr-TR');
+    var x;
+    for( x=0;x<jsonObject.list.length;x++){
+        var value=jsonObject.list[x];
+        var row="";
+        //console.log("val "+value.il +" il "+il);
+        if(value.il==il)
+        {
+
+            var ilce =upperCaseFirstLetter(value.ilce.toLocaleLowerCase('tr-TR'));
+            row +='<option value="'+value.ilce+'">'+ilce+'</option>';
+            $("#district").append(row);
+        }
+
+    }
+    for( x=0;x<categoryObj.list.length;x++){
+        var value=categoryObj.list[x];
+        var row="";
+        //console.log("val "+value.kategori +" il "+filter_category+" x :"+x);
+        if(value.kategori==filter_category)
+        {
+
+            row +='<option value="'+value.val+'">'+value.alt+'</option>';
+            $("#subCategory").append(row);
+        }
+
+    }
+
+    $('#results').html('<div id="loader"></div>');
+    $.ajax({
+		url : '/first?filter_start_date='+filter_start_date+'&filter_city='+filter_city+'&filter_end_date='+filter_end_date+'&filter_category='+filter_category,
+		type: 'GET',
+		data: {
+			all_data:$('#all_data').val(),
+			markers:$('#markers').val(),
+		},
+		success: function (data) { // Create an array to hold the data.
+
+        if (data.error){
+            $('#results').text(data.error).show();
+        }
+        else{
+        getEvents(data.all_data);
+        $.each(data.markers,
+          function(key, value)
+          {
+            var mark="hidden";
+            if (parseFloat(value.capacity) > 5000){
+              mark = "visible";
+            }else{
+              //mark= "hidden";
+            }
+            var content='';
+            for (var i=0; i<value.list.length ; i++) {
+                var new_date = new Date(value.list[i]['start_date']);
+                var options= {weekday:'long', year:'numeric', month:'long', day:'numeric'};
+                var tr_dt = new_date.toLocaleDateString("tr-TR",options);
+                 content = content +'<div class="content">'+
+                '<h2 class="firstHeading" >'+value.list[i]['name']+
+                '&nbsp&nbsp&nbsp&nbsp<img style="visibility: '
+                + mark +';" src="https://cdn1.iconfinder.com/data/icons/color-bold-style/21/08-512.png"></h2>'+
+                '<div class="place2">'+
+                 value.place_name +'</div><div class="text2"><b>Başlangıç: </b> &nbsp&nbsp' +
+                 tr_dt+ '&nbsp&nbsp , '+
+                 value.list[i]['start_time']+'</div>'+
+                '</div>';
+            }
+
+            /*var content ='<div class="content">'+
+            '<h2 id="firstHeading" >'+value.name+
+            '&nbsp&nbsp&nbsp&nbsp<img style="visibility: '
+            + mark +';" src="https://cdn1.iconfinder.com/data/icons/color-bold-style/21/08-512.png"></h2>'+
+            '<div class="place">'+
+             value.place_name +'</div><div id="text">Başlangıç: &nbsp&nbsp' +
+             value.start_time+ '&nbsp&nbsp ,'+
+             value.start_date+'</div>'+
+            '</div>'; */
+            addMarker(value.lat, value.lng, content,value.icon);
+          });
+         var items = [];
+         // Parse the data by looking at
+         // each entry in the Users object.
+         $('#results').empty();
+         $('#ev_num').empty();
+         $.each(data.all_data,
+          function(key, value)
+          {
+            var new_date = new Date(value.start_date);
+            var options= {weekday:'long', year:'numeric', month:'long', day:'numeric'};
+            var tr_dt = new_date.toLocaleDateString("tr-TR",options);
+            var new_date = new Date(value.end_date);
+            var options= {weekday:'long', year:'numeric', month:'long', day:'numeric'};
+            var tre_dt = new_date.toLocaleDateString("tr-TR",options);
+            items.push('<li class="item" style=" background-color:'+value.color+';"><h2>'
+             +value.name+"</h2><div class='place'>"+
+             value.place_name +","+
+             value.place_district +","+
+             value.place_city+ '</div><div class="text"><b>Başlangıç:</b> &nbsp&nbsp' +
+             tr_dt+'&nbsp'+
+             value.start_time+'<br> <b>Bitiş: </b>&nbsp&nbsp'+
+             tre_dt + '</div><div class=\"text\"> <b> Ücret: </b>  &nbsp' +
+             value.price+
+             value.currency+'</div><div class="text"> <b> Kategori: </b>'+
+             value.category + '</div></li>');
+          });
+
+
+         console.log(items.length);
+         if(items.length >0){
+         // Place the result in an unordered list.
+         var element = $('<ul/>');
+         element.addClass('my-new-list').html(items.join(''));
+         element.appendTo('#results');
+         var n = items.length.toString();
+         $('#ev_num').html(n + " etkinlik listeleniyor");
+         }else{
+            $('#results').html('<div style="font-size:32px" >Sonuç Yok</div>');
+         }
+        }
+    }
+
+        });
+
+
+    var first=0;
+    //This event listener calls addMarker() when the map is clicked.
+    google.maps.event.addListener(map, 'click', function(event) {
+        userdata = { "lat" : event.latLng.lat(),"lng": event.latLng.lng()};
+        lat=event.latLng.lat();
+        lng=event.latLng.lng();
+        console.log(event.latLng.lat());
+        //var checkBox = document.getElementById("checkbox");
+        if (checked == true){
+            if( first == 1){
+                circle.setMap(null);
+
+            }else{
+                first=1;
+
+            }
+            var marker2 = placeMarker(event.latLng);
+            marker2.setMap(map);
+            var radius = document.getElementById("radius").value;
+            var unit = $( "#radius_unit option:selected" ).text();
+			// 'm' seçildiğinde çarpan 1 olucak
+			r_unit=1;
+			if( unit == "km"){
+			   r_unit=1000;
+			}
+            var radius_meter = parseInt(radius)* r_unit;
+            console.log("radius meter ");
+            console.log(radius_meter);
+            circle = new google.maps.Circle({
+                map: map,
+                radius: radius_meter,
+                fillColor: '#AA0000'
+            });
+            circle.bindTo('center',marker2, 'position');
+            delMarker = marker2;
+        } else {
+            alert("Çap girin");
+        }
+
+        /*userdata='{"lat":'+event.latLng.lat()+',"lng":'+event.latLng.lng()+'}';
+        console.log(userdata);
+        //var json_latlng=JSON.parse(latlng);
+        lat=event.latLng.lat();
+        lng=event.latLng.lng();
+        console.log(event.latLng.lat());
+        placeMarker(event.latLng);*/
+    });
+
+
+}
+
+function getEvents(data){
+    all_data= data;
+}
+
+ google.maps.event.addDomListener(window, 'load', initialize);
+//Filtreleri python koduna gönderip markerları ekleyen fonksiyon
+function getAndLoad(){
+  console.log(all_data[0]);
+  $('#results').html('<div id="loader"></div>');
+  $('.contain').toggle(250);
+  $('#results').toggle(250);
+  $('#sorts').toggle(250);
+  $('.cat_color').toggle(250);
+  var city = $( "#selectCity option:selected" ).text();
+  console.log(city);
+  var geocoder = new google.maps.Geocoder();
+  var address = city + " ,Turkey";
+  if(city == 'Hepsi'){
+      map.setZoom(6);
+  }else{
+      map.setZoom(11);
+  }
+  geocoder.geocode({'address': address}, function(results, status) {
+    if (status === 'OK') {
+      map.setCenter(results[0].geometry.location);
+
+    } else {
+      console.log('Geocode was not successful for the following reason: ' + status);
+    }
+  });
+  var category = $( "#selectCategory option:selected" ).text();
+  console.log(category);
+  var st =$('#reportrange span').text();
+
+  console.log(st);
+  var spl_list = st.split("-");
+
+  moment.locale('tr');
+  console.log(moment(spl_list[0],"MMMM DD,YYYY"));
+  var startDate =moment(spl_list[0],"MMMM DD,YYYY").format("YYYY-MM-DD");
+  var endDate = moment(spl_list[1],"MMMM DD,YYYY").format("YYYY-MM-DD");
+
+  console.log(startDate);
+  console.log(endDate);
+  var subCategory = $( "#subCategory option:selected" ).val();
+  console.log("sub category");
+  console.log(subCategory);
+  //var checkBox = document.getElementById("checkbox");
+  var min = document.getElementById("min").value;
+  if( min == "" ) {console.log("null");}
+  var max = document.getElementById("max").value;
+  var min_c= $( "#min_currency option:selected" ).text();
+  var max_c= $( "#max_currency option:selected" ).text();
+  console.log(min);
+  console.log(max);
+  var value_list;
+  if (checked == 1){
+      var lat=userdata["lat"];
+      var lng=userdata["lng"];
+      var radius = document.getElementById("radius").value;
+      var unit = $( "#radius_unit option:selected" ).text();
+      // 'm' seçildiğinde çarpan 1 olucak
+      r_unit=1;
+      if( unit == "km"){
+         r_unit=1000;
+      }
+      console.log("lat"+lat);
+      console.log("lng"+lng);
+      console.log(radius);
+      value_list = 'checked='+1+'&lat='+lat+'&lng='+lng+'&filter_radius='+radius+'&radius_unit='+r_unit+'&filter_start_date='+startDate+'&filter_end_date='+endDate+'&filter_category='+category+'&filter_city='+city+'&filter_sub_category='+subCategory+'&min_price='+min+'&max_price='+max+'&min_currency='+min_c+'&max_currency='+max_c
+  } else {
+      var district = $( "#district option:selected" ).text();
+      value_list = 'checked='+0+'&district='+district+'&filter_start_date='+startDate+'&filter_end_date='+endDate+'&filter_category='+category+'&filter_city='+city+'&filter_sub_category='+subCategory+'&min_price='+min+'&max_price='+max+'&min_currency='+min_c+'&max_currency='+max_c
+  }
+
+  //var filter_date=$( "#filter_date" ).val();
+  //var filter_radius=$( "#filter_radius" ).val();
+  function removeMarkers(){
+      var i;
+      for(i=0; i<all_markers.length; i++){
+          all_markers[i].setMap(null);
+      }
+  }
+  removeMarkers();
+  $.ajax({
+      url : '/write?'+value_list,
+      type: 'GET',
+      data: {
+          all_data:$('#all_data').val(),
+          markers:$('#markers').val(),
+      },
+      success: function (data) { // Create an array to hold the data.
+
+        if (data.error){
+            $('#results').text(data.error).show();
+        }
+        else{
+        getEvents(data.all_data);
+        $.each(data.markers,
+          function(key, value)
+          {
+            console.log("capacity: "+value.capacity);
+            var mark="hidden";
+            if (parseFloat(value.capacity) > 5000){
+              mark = "visible";
+            }else{
+              mark= "hidden";
+            }
+
+            var content='';
+            for (var i=0; i<value.list.length ; i++) {
+                var new_date = new Date(value.list[i]['start_date']);
+                var options= {weekday:'long', year:'numeric', month:'long', day:'numeric'};
+                var tr_dt = new_date.toLocaleDateString("tr-TR",options);
+                 content = content +'<div class="content">'+
+                '<h2 class="firstHeading" >'+value.list[i]['name']+
+                '&nbsp&nbsp&nbsp&nbsp<img style="visibility: '
+                + mark +';" src="https://cdn1.iconfinder.com/data/icons/color-bold-style/21/08-512.png"></h2>'+
+                '<div class="place2">'+
+                 value.place_name +'</div><div class="text2"><b>Başlangıç: </b> &nbsp&nbsp' +
+                 tr_dt+ '&nbsp&nbsp , '+
+                 value.list[i]['start_time']+'</div>'+
+                '</div>';
+            }
+
+            addMarker(value.lat, value.lng ,content,value.icon);
+          });
+         var items = [];
+         // Parse the data by looking at
+         // each entry in the Users object.
+         $('#results').empty();
+         $('#ev_num').empty();
+         $.each(data.all_data,
+          function(key, value)
+          {
+            var new_date = new Date(value.start_date);
+            var options= {weekday:'long', year:'numeric', month:'long', day:'numeric'};
+            var tr_dt = new_date.toLocaleDateString("tr-TR",options);
+            var new_date = new Date(value.end_date);
+            var options= {weekday:'long', year:'numeric', month:'long', day:'numeric'};
+            var tre_dt = new_date.toLocaleDateString("tr-TR",options);
+            items.push('<li class="item" style=" background-color:'+value.color+';"><h2>'
+             +value.name+"</h2><div class='place'>"+
+             value.place_name +","+
+             value.place_district +","+
+             value.place_city+ '</div><div class="text"><b>Başlangıç:</b> &nbsp&nbsp' +
+             tr_dt+'&nbsp'+
+             value.start_time+'<br> <b>Bitiş: </b>&nbsp&nbsp'+
+             tre_dt + '</div><div class=\"text\"> <b> Ücret: </b>  &nbsp' +
+             value.price+
+             value.currency+'</div><div class="text"> <b> Kategori: </b>'+
+             value.category + '</div></li>');
+
+          });
+         // Place the result in an unordered list.
+         if(items.length >0){
+           var element = $('<ul/>');
+           element.addClass('my-new-list').html(items.join(''));
+           element.appendTo('#results');
+           var n = items.length.toString();
+           $('#ev_num').html(n + " etkinlik listeleniyor");
+         }else{
+            $('#results').html('<div style="font-size:32px" >Sonuç Yok</div>');
+         }
+       }
+ }
+
+  });
+  //e.preventDefault();
+}
+
+
+
+
+function placeMarker(location) {
+    if ( marker ) {
+    marker.setPosition(location);
+    } else {
+    marker = new google.maps.Marker({
+      position: location,
+      map: map
+    });
+    }
+    return marker;
+}
+//Tarih seçen filtrenin fonksiyonu
+$(function() {
+
+    var filter_start_date = localStorage.getItem('startDate');
+    var filter_end_date = localStorage.getItem('endDate');
+    var start_date = moment(filter_start_date).valueOf();
+    var end_date = moment(filter_end_date).valueOf();
+    $('#reportrange span').html(moment(start_date).format('MMMM D, YYYY') + ' - ' + moment(end_date).format('MMMM D, YYYY'));
+
+    var start = moment();
+    var end = moment().add(7,'days');
+
+    function cb(start, end) {
+        $('#reportrange span').html(start.format('MMMM D, YYYY') + ' - ' + end.format('MMMM D, YYYY'));
+    }
+
+    $('#reportrange').daterangepicker({
+        "locale": {
+                "separator": " - ",
+                "applyLabel": "Uygula",
+                "cancelLabel": "İptal",
+                "customRangeLabel": "Özel Aralık",
+
+                },
+        startDate: start,
+        endDate: end,
+        ranges: {
+           'Bugün': [moment(), moment()],
+           'Yarın': [moment().add(1, 'days'), moment().add(1, 'days')],
+           'Bu Haftasonu': [moment().isoWeekday(6)._d, moment().isoWeekday(7)._d],
+           'Bu Hafta': [moment(), moment().isoWeekday(7)._d],
+           'Gelecek Hafta': [moment().add(1, 'weeks').startOf('isoWeek'),moment().add(1, 'weeks').endOf('isoWeek')],
+           'Bu Ay': [moment().startOf('month'), moment().endOf('month')],
+           'Gelecek Ay': [moment().add(1, 'month').startOf('month'), moment().add(1, 'month').endOf('month')]
+        }
+    }, cb);
+
+});
+
+
+
+function changeDistrictList(){
+
+    var city = $( "#selectCity option:selected" ).text();
+    console.log("district city"+city);
+    var il = city.toLocaleUpperCase('tr-TR');
+
+    $("#district").attr("disabled", false).html("<option value=''>Hepsi</option>");
+    var x;
+    for( x=0;x<jsonObject.list.length;x++){
+        var value=jsonObject.list[x];
+        var row="";
+        console.log("val "+value.il +" il "+il);
+        if(value.il==il)
+        {
+
+            var ilce =upperCaseFirstLetter(value.ilce.toLocaleLowerCase('tr-TR'));
+            row +='<option value="'+value.ilce+'">'+ilce+'</option>';
+            $("#district").append(row);
+        }
+
+    }
+
+}
+
+
+function changeSubCList(){
+    var category = $( "#selectCategory option:selected"  ).text();
+
+    $("#subCategory").attr("disabled", false).html("<option value='null'>Hepsi</option>");
+    var x;
+    for( x=0;x<categoryObj.list.length;x++){
+        var value=categoryObj.list[x];
+        var row="";
+        console.log("val "+value.kategori +" il "+category+" x :"+x);
+        if(value.kategori==category)
+        {
+
+            row +='<option value="'+value.val+'">'+value.alt+'</option>';
+            $("#subCategory").append(row);
+        }
+
+    }
+
+}
+
+function addToResults(x,type){
+  var items=[];
+  if( type == "art"){
+    for (var i=0; i<x.length;i++){
+        var new_date = new Date(x[i].start_date);
+        var options= {weekday:'long', year:'numeric', month:'long', day:'numeric'};
+        var tr_dt = new_date.toLocaleDateString("tr-TR",options);
+        var new_date = new Date(x[i].end_date);
+        var options= {weekday:'long', year:'numeric', month:'long', day:'numeric'};
+        var tre_dt = new_date.toLocaleDateString("tr-TR",options);
+       items.push('<li class="item" style=" background-color:'+x[i].color+';"><h2>'
+       +x[i].name+"</h2><div class='place'>"+
+       x[i].place_name +","+
+       x[i].place_district +","+
+       x[i].place_city+ '</div><div class="text"> <b>Başlangıç:  </b>&nbsp&nbsp' +
+       tr_dt+'&nbsp'+
+       x[i].start_time+'<br> <b>Bitiş: </b> &nbsp&nbsp'+
+       tre_dt+ '</div><div class=\"text\"> <b> Ücret: </b>  &nbsp' +
+       x[i].price+
+       x[i].currency+'</div><div class="text"> <b> Kategori: </b>'+
+       x[i].category + '</div></li>');
+
+    };
+  } else{
+    for (var i=x.length-1; i>=0;i--){
+       var new_date = new Date(x[i].start_date);
+        var options= {weekday:'long', year:'numeric', month:'long', day:'numeric'};
+        var tr_dt = new_date.toLocaleDateString("tr-TR",options);
+        var new_date = new Date(x[i].end_date);
+        var options= {weekday:'long', year:'numeric', month:'long', day:'numeric'};
+        var tre_dt = new_date.toLocaleDateString("tr-TR",options);
+       items.push('<li class="item" style=" background-color:'+x[i].color+';"><h2>'
+       +x[i].name+"</h2><div class='place'>"+
+       x[i].place_name +","+
+       x[i].place_district +","+
+       x[i].place_city+ '</div><div class="text"> <b>Başlangıç:  </b>&nbsp&nbsp' +
+       tr_dt+'&nbsp'+
+       x[i].start_time+'<br> <b>Bitiş: </b> &nbsp&nbsp'+
+       tre_dt+ '</div><div class=\"text\"> <b> Ücret: </b>  &nbsp' +
+       x[i].price+
+       x[i].currency+'</div><div class="text"> <b> Kategori: </b>'+
+       x[i].category + '</div></li>');
+
+    };
+  }
+  $('#results').empty();
+  if(items.length >0){
+    var element = $('<ul/>');
+    element.addClass('my-new-list').html(items.join(''));
+    element.appendTo('#results');
+  }else{
+    $('#results').html('<div style="font-size:32px" >Sonuç Yok</div>');
+  }
+
+}
+
+
+function sortEvents(){
+    var selection = $( "#sort option:selected" ).val();
+    if ( selection == "tar_art"){
+      x = all_data.sort(function (a, b) {
+        if (a.start_date > b.start_date) return 1;
+        if (a.start_date < b.start_date) return -1;
+
+        // If the start_date is the same between both items, sort alphabetically
+        // If the first item comes first in the alphabet, move it up
+        // Otherwise move it down
+        if (a.start_time > b.start_time) return 1;
+        if (a.start_time < b.start_time) return -1;
+      });
+      addToResults(x,"art");
+    }else if( selection == "tar_az" ){
+      x = all_data.sort(function (a, b) {
+        if (a.start_date > b.start_date) return 1;
+        if (a.start_date < b.start_date) return -1;
+
+        // If the start_date is the same between both items, sort alphabetically
+        // If the first item comes first in the alphabet, move it up
+        // Otherwise move it down
+        if (a.start_time > b.start_time) return 1;
+        if (a.start_time < b.start_time) return -1;
+      });
+
+      addToResults(x,"az");
+    }else if( selection == "fi_art"){
+      x = all_data.sort(function (a, b) {
+        return a.price - b.price;
+      });
+
+      addToResults(x,"art");
+    }else if( selection == "fi_az"){
+      x = all_data.sort(function (a, b) {
+        return a.price - b.price;
+      });
+
+      addToResults(x,"az");
+    }
+}
+
+</script>
+</head>
+<body style="overflow:scroll;">
+
+<div class="content">
+    <nav class="navbar navbar-default navbar-fixed-top">
+    <div class="container">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" style="color:#ffffff;" href="#">Logo</a>
+        </div>
+        <div class="collapse navbar-collapse" id="myNavbar">
+          <ul class="nav navbar-nav navbar-right">
+            {% if 'username' in session%}
+            {% if session["type"]=="admin"%}
+          <li  style="color:#ffffff; font-size:18px; margin-top:12px">Hoşgeldin, {{session["username"]}}!</li><li><a href="/admin/" style="color:#ffffff; font-size:18px;">Admin Sayfasına Git</a></li><li><form method=POST action="{{ url_for('logout') }}"><button type="submit" class="btn btn-block" style="color:#ffffff; font-size:18px;background-color:#FD0909;margin-top:4px">Çıkış yap</button></form></li>
+            {%else%}
+          <li style="color:#ffffff; font-size:18px; margin-top:12px" >Hoşgeldin, {{session["username"]}}!</li><li><form method=POST action="{{ url_for('logout') }}"><button type="submit" class="btn btn-block" style="color:#ffffff; font-size:18px;background-color:#FD0909;margin-top:4px">Çıkış yap</button></form></li>
+
+          {% endif %}
+          {%else%}
+             <li><a href="/giris" style="color:#ffffff; font-size:18px;">Giriş Yap</a></li>
+          {% endif %}
+          </ul>
+        </div>
+    </div>
+</nav>
+
+    <div class="container" style="width:100%; height: 85%;margin-top:60px">
+        <div class="row" >
+            <div class="col-sm-4" style="height:100%">
+                <h3 class="filter_list" style="text-align:center; color:white; padding:2px; background-color: #faa000;">Arama Seçenekleri</h3>
+                 <div class="contain" align="right" style="">
+                   <p class="adress_name" style=" text-align:center; color:white; font-size:20px;">Adres</p>
+                   <div class="row adress"  >
+                     <div class="row" align="center" style=" padding:10px">
+                       <p class="btn filter_names">İl</p>
+                       <select id="selectCity"  onchange="changeDistrictList()" class="selectpicker" data-style="btn-danger" style="width:200px; height:42px;">
+                         <option value="0">Hepsi</option>
+                         <option value="1">Adana</option>
+                         <option value="2">Adıyaman</option>
+                         <option value="3">Afyonkarahisar</option>
+                         <option value="4">Ağrı</option>
+                         <option value="5">Amasya</option>
+                         <option value="6">Ankara</option>
+                         <option value="7">Antalya</option>
+                         <option value="8">Artvin</option>
+                         <option value="9">Aydın</option>
+                         <option value="10">Balıkesir</option>
+                         <option value="11">Bilecik</option>
+                         <option value="12">Bingöl</option>
+                         <option value="13">Bitlis</option>
+                         <option value="14">Bolu</option>
+                         <option value="15">Burdur</option>
+                         <option value="16">Bursa</option>
+                         <option value="17">Çanakkale</option>
+                         <option value="18">Çankırı</option>
+                         <option value="19">Çorum</option>
+                         <option value="20">Denizli</option>
+                         <option value="21">Diyarbakır</option>
+                         <option value="22">Edirne</option>
+                         <option value="23">Elazığ</option>
+                         <option value="24">Erzincan</option>
+                         <option value="25">Erzurum</option>
+                         <option value="26">Eskişehir</option>
+                         <option value="27">Gaziantep</option>
+                         <option value="28">Giresun</option>
+                         <option value="29">Gümüşhane</option>
+                         <option value="30">Hakkâri</option>
+                         <option value="31">Hatay</option>
+                         <option value="32">Isparta</option>
+                         <option value="33">Mersin</option>
+                         <option value="34">İstanbul</option>
+                         <option value="35">İzmir</option>
+                         <option value="36">Kars</option>
+                         <option value="37">Kastamonu</option>
+                         <option value="38">Kayseri</option>
+                         <option value="39">Kırklareli</option>
+                         <option value="40">Kırşehir</option>
+                         <option value="41">Kocaeli</option>
+                         <option value="42">Konya</option>
+                         <option value="43">Kütahya</option>
+                         <option value="44">Malatya</option>
+                         <option value="45">Manisa</option>
+                         <option value="46">Kahramanmaraş</option>
+                         <option value="47">Mardin</option>
+                         <option value="48">Muğla</option>
+                         <option value="49">Muş</option>
+                         <option value="50">Nevşehir</option>
+                         <option value="51">Niğde</option>
+                         <option value="52">Ordu</option>
+                         <option value="53">Rize</option>
+                         <option value="54">Sakarya</option>
+                         <option value="55">Samsun</option>
+                         <option value="56">Siirt</option>
+                         <option value="57">Sinop</option>
+                         <option value="58">Sivas</option>
+                         <option value="59">Tekirdağ</option>
+                         <option value="60">Tokat</option>
+                         <option value="61">Trabzon</option>
+                         <option value="62">Tunceli</option>
+                         <option value="63">Şanlıurfa</option>
+                         <option value="64">Uşak</option>
+                         <option value="65">Van</option>
+                         <option value="66">Yozgat</option>
+                         <option value="67">Zonguldak</option>
+                         <option value="68">Aksaray</option>
+                         <option value="69">Bayburt</option>
+                         <option value="70">Karaman</option>
+                         <option value="71">Kırıkkale</option>
+                         <option value="72">Batman</option>
+                         <option value="73">Şırnak</option>
+                         <option value="74">Bartın</option>
+                         <option value="75">Ardahan</option>
+                         <option value="76">Iğdır</option>
+                         <option value="77">Yalova</option>
+                         <option value="78">Karabük</option>
+                         <option value="79">Kilis</option>
+                         <option value="80">Osmaniye</option>
+                         <option value="81">Düzce</option>
+                       </select>
+                     </div>
+                     <div class="row" align="center" style="  padding:10px;">
+                       <p class="btn filter_names">İlçe</p>
+                       <select name="ilce" id="district" class="selectpicker" data-style="btn-danger" style="width:200px; height:42px; ">
+                         <option value="">Hepsi</option>
+                       </select>
+                     </div>
+                   </div>
+                   <p class="loc_name" style="margin-top:5px; text-align:center; color:white; font-size:20px;">Konum</p>
+                    <div class="row loc"  >
+                     <div class="row" align="center" style="  padding:10px;">
+                       <p class="btn filter_names" >Arama <br> Çapı</p>&nbsp&nbsp
+                    <input type="number" id="radius" min="0" style="height:38px; width:150px;">
+                    <select name="ilce" id="radius_unit" class="selectpicker" data-style="btn-danger" style="width:50px; height:38px; ">
+                      <option value="m">m</option>
+                      <option value="km">km</option>
+                    </select>
+                     </div>
+                   </div>
+                   <p class="cat_name" style="margin-top:5px; text-align:center; color:white; font-size:20px;">Kategori</p>
+                   <div class="row cat"   >
+                     <div class="row" align="center" style=" padding:10px">
+                       <p class="btn filter_names">Kategori</p>
+                      <select id="selectCategory" onchange="changeSubCList()" class="selectpicker " data-style="btn-primary" style="width:200px; height:42px;">
+                        <option value="0">Hepsi</option>
+                        <option value="1">Sahne</option>
+                        <option value="2">Müzik</option>
+                        <option value="3">Aile</option>
+                        <option value="4">Spor</option>
+                        <option value="5">Diğerleri</option>
+                      </select>
+                     </div>
+                     <div class="row" align="center" style=" padding:10px;">
+                       <p class="btn filter_names">Alt Kategori</p>
+                      <select name="Alt_Kategori" id="subCategory" class="selectpicker" data-style="btn-danger" style="width:200px; height:42px; ">
+                        <option value="null">Hepsi</option>
+                      </select>
+                     </div>
+                   </div>
+                   <p class="price_name" style="margin-top:5px; text-align:center; color:white; font-size:20px;">Fiyat</p>
+                   <div class="row price"   >
+                     <div class="row" align="center" style=" padding:10px">
+                       <p class="btn filter_names" >Minimum<br>Fiyat</p>&nbsp&nbsp&nbsp
+                       <input type="number" id="min" min="0" style="height:38px; width:150px; ">
+                       <select name="ilce" id="min_currency" class="selectpicker" data-style="btn-danger" style="width:50px; height:38px; ">
+                         <option value="tl">TL</option>
+                       </select>
+                     </div>
+                     <div class="row" align="center" style=" padding:10px;">
+                       <p class="btn filter_names" >Maksimum<br>Fiyat</p>&nbsp&nbsp&nbsp
+                       <input type="number" id="max" min="0" style="height:38px; width:150px; ">
+                       <select name="ilce" id="max_currency" class="selectpicker" data-style="btn-danger" style="width:50px; height:38px; ">
+                         <option value="tl">TL</option>
+                       </select>
+                     </div>
+                   </div>
+                   <p class="date_name" style="margin-top:5px; text-align:center; color:white; font-size:20px;">Tarih *</p>
+                   <div class="row date"   >
+                     <div class="row" align="center" style="padding:10px">
+                       <p class="btn filter_names"  >Tarih</p>
+                      <div id="reportrange" class="btn" style="text-align: center;background: #fff; cursor: pointer;  border: 1px solid #ccc; width: 300px; height:38px; position: relative; z-index: 9999 !important;">
+                        <i class="fa fa-calendar"></i>
+                        <span></span> <i class="fa fa-caret-down"></i>
+                      </div>
+                     </div>
+                   </div>
+                   <button id="ara" onclick="getAndLoad();" type="button" class="btn btn-primary" value="submit">Ara</button>
+                 </div>
+                 <div class="cat_color"style="border:1px solid black;">
+                  <div style="width:100%;text-align: center; font-size:18px;"> Kategori Renkleri</div>
+                  <div class="grid-container">
+                    <div class="grid-item" style="background-color:#4694ae"></div>
+                    <div class="grid-item" style="background-color:#7aca5e"></div>
+                    <div class="grid-item" style="background-color:#edbf5c"></div>
+                    <div class="grid-item" style="background-color:#9f659d"></div>
+                    <div class="grid-item" style="background-color:#f3706b"></div>
+                    <div class="grid-item">Müzik</div>
+                    <div class="grid-item">Sahne</div>
+                    <div class="grid-item">Aile</div>
+                    <div class="grid-item">Spor</div>
+                    <div class="grid-item">Diğerleri</div>
+                  </div>
+                </div>
+                 <div id="sorts" align="center" class="row">
+                   <div class="col-sm-6">
+                   <p id="ev_num" style="text-align:center; padding:5px;width:220px; font-size:18px; height:42px;" ></p></div>
+                   <div class="col-sm-6">
+                     <select  id="sort" class="selectpicker"  onchange="sortEvents()" data-style="btn-primary" style="width:200px; height:42px; ">
+                       <option value="sort">Sıralama</option>
+                       <option value="tar_art">En erkenden tarihten geçe</option>
+                       <option value="tar_az">En geçten tarihten erkene</option>
+                       <option value="fi_art">En ucuzdan en pahalıya</option>
+                       <option value="fi_az">En pahalıdan en ucuza</option>
+                     </select>
+                   </div>
+
+
+                 </div>
+
+                <div  id="results"></div>
+            </div>
+            <div class="col-sm-8" align="center"><div  id="map"></div><div id="legend"><h5>Lejant <br>(İlçe Etkinlik <br> Sayısı)</h5></div></div>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>

@@ -1,0 +1,21 @@
+
+{% block body %} 
+<div class="container" align="center" style="margin-top:200px;">
+    <div class="row">
+        <div class="col-md-4 col-md-offset-4">
+            <form method=POST action="{{ url_for('register') }}">
+                <div class="form-group" style="margin:5px;">
+                    <label for="exampleInputEmail1" style="font-size:20px;">Kullanıcı Adı</label>
+                    <input type="text" class="form-control" name="username"  style="height:40px;" placeholder="">
+                </div>
+                <div class="form-group" style="margin:5px;">
+                    <label for="exampleInputPassword1" style="font-size:20px;">Parola</label>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp
+                    <input type="password" class="form-control" name="pass" style="height:40px;" placeholder="">
+                </div>
+                <button type="submit" class="btn btn-primary " style="font-size:20px;">Kayıt Ol</button>
+            </form>
+            <br>
+        </div>
+    </div>
+</div>
+{% endblock %}
